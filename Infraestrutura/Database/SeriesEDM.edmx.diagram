@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4778cf8841f540ef878b5588968493f9" Name="Diagram1">
+        <EntityTypeShape EntityType="SeriesDatabaseModel1.Episodio" Width="1.5" PointX="7.375" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SeriesDatabaseModel1.SerieTV" Width="1.5" PointX="7.375" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SeriesDatabaseModel1.Usuario" Width="1.5" PointX="1.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SeriesDatabaseModel1.UsuarioSerie" Width="1.5" PointX="4.875" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SeriesDatabaseModel1.Visto" Width="1.5" PointX="1.625" PointY="4.875" IsExpanded="true" />
+        <AssociationConnector Association="SeriesDatabaseModel1.FK_Episodios_Series" ManuallyRouted="false" />
+        <AssociationConnector Association="SeriesDatabaseModel1.FK_Vistos_ToEpisodios" ManuallyRouted="false" />
+        <AssociationConnector Association="SeriesDatabaseModel1.FK_UsuarioSerie_ToSeries" ManuallyRouted="false" />
+        <AssociationConnector Association="SeriesDatabaseModel1.FK_UsuarioSerie_ToUsuarios" ManuallyRouted="false" />
+        <AssociationConnector Association="SeriesDatabaseModel1.FK_Vistos_ToUsuario" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

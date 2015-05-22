@@ -1,0 +1,50 @@
+﻿@model Dominio.Classes.Usuario
+
+@{
+    ViewBag.Title = "Remover";
+}
+
+<h2>Remover</h2>
+
+<h3>Deseja realmente excluir este usuário?</h3>
+<div>
+    @using (Html.BeginForm("Excluir", "Usuario"))
+    {
+        @Html.AntiForgeryToken()
+    
+        <h4>Usuario</h4>
+        <hr />
+        @Html.HiddenFor(model => model.id)
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.nome)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.nome)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.email)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.senha)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.senha)
+            </dd>
+
+        </dl>
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Excluir" class="btn btn-default" /> |
+            @Html.ActionLink("Voltar", "Index")
+        </div>
+    }
+</div>

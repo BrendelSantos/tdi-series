@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SeriesDatabaseModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Episodios">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idSerie" Type="int" Nullable="false" />
+          <Property Name="nome" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="exibicao" Type="date" Nullable="false" />
+          <Property Name="resumo" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="temporada" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Series">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="status" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="emissora" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="dia" Type="int" Nullable="false" />
+          <Property Name="horario" Type="time" Precision="7" Nullable="false" />
+          <Property Name="sinopse" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="ano" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="senha" Type="nchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UsuarioSerie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="idSerie" Type="int" Nullable="false" />
+          <Property Name="preferencia" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vistos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="idUsuario" Type="int" Nullable="false" />
+          <Property Name="idEpisodio" Type="int" Nullable="false" />
+          <Property Name="avaliacao" Type="int" />
+        </EntityType>
+        <Association Name="FK_Episodios_Series">
+          <End Role="Series" Type="Self.Series" Multiplicity="1" />
+          <End Role="Episodios" Type="Self.Episodios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Episodios">
+              <PropertyRef Name="idSerie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioSerie_ToSeries">
+          <End Role="Series" Type="Self.Series" Multiplicity="1" />
+          <End Role="UsuarioSerie" Type="Self.UsuarioSerie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuarioSerie">
+              <PropertyRef Name="idSerie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioSerie_ToUsuarios">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="UsuarioSerie" Type="Self.UsuarioSerie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UsuarioSerie">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vistos_ToEpisodios">
+          <End Role="Episodios" Type="Self.Episodios" Multiplicity="1" />
+          <End Role="Vistos" Type="Self.Vistos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Episodios">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vistos">
+              <PropertyRef Name="idEpisodio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vistos_ToUsuario">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="Vistos" Type="Self.Vistos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Vistos">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SeriesDatabaseModel1StoreContainer">
+          <EntitySet Name="Episodios" EntityType="Self.Episodios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Series" EntityType="Self.Series" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsuarioSerie" EntityType="Self.UsuarioSerie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vistos" EntityType="Self.Vistos" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Episodios_Series" Association="Self.FK_Episodios_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="Episodios" EntitySet="Episodios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioSerie_ToSeries" Association="Self.FK_UsuarioSerie_ToSeries">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="UsuarioSerie" EntitySet="UsuarioSerie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioSerie_ToUsuarios" Association="Self.FK_UsuarioSerie_ToUsuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="UsuarioSerie" EntitySet="UsuarioSerie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vistos_ToEpisodios" Association="Self.FK_Vistos_ToEpisodios">
+            <End Role="Episodios" EntitySet="Episodios" />
+            <End Role="Vistos" EntitySet="Vistos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vistos_ToUsuario" Association="Self.FK_Vistos_ToUsuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Vistos" EntitySet="Vistos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SeriesDatabaseModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Episodio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idSerie" Type="Int32" Nullable="false" />
+          <Property Name="nome" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="exibicao" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="resumo" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="temporada" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SerieTV" Relationship="Self.FK_Episodios_Series" FromRole="Episodios" ToRole="Series" />
+          <NavigationProperty Name="Vistos" Relationship="Self.FK_Vistos_ToEpisodios" FromRole="Episodios" ToRole="Vistos" />
+        </EntityType>
+        <EntityType Name="SerieTV">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="emissora" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="dia" Type="Int32" Nullable="false" />
+          <Property Name="horario" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="sinopse" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ano" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Episodios" Relationship="Self.FK_Episodios_Series" FromRole="Series" ToRole="Episodios" />
+          <NavigationProperty Name="UsuarioSerie" Relationship="Self.FK_UsuarioSerie_ToSeries" FromRole="Series" ToRole="UsuarioSerie" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="senha" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="UsuarioSerie" Relationship="Self.FK_UsuarioSerie_ToUsuarios" FromRole="Usuarios" ToRole="UsuarioSerie" />
+          <NavigationProperty Name="Vistos" Relationship="Self.FK_Vistos_ToUsuario" FromRole="Usuarios" ToRole="Vistos" />
+        </EntityType>
+        <EntityType Name="UsuarioSerie">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="idSerie" Type="Int32" Nullable="false" />
+          <Property Name="preferencia" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SerieTV" Relationship="Self.FK_UsuarioSerie_ToSeries" FromRole="UsuarioSerie" ToRole="Series" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_UsuarioSerie_ToUsuarios" FromRole="UsuarioSerie" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Visto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="idEpisodio" Type="Int32" Nullable="false" />
+          <Property Name="avaliacao" Type="Int32" />
+          <NavigationProperty Name="Episodio" Relationship="Self.FK_Vistos_ToEpisodios" FromRole="Vistos" ToRole="Episodios" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Vistos_ToUsuario" FromRole="Vistos" ToRole="Usuarios" />
+        </EntityType>
+        <Association Name="FK_Episodios_Series">
+          <End Role="Series" Type="SeriesDatabaseModel1.SerieTV" Multiplicity="1" />
+          <End Role="Episodios" Type="SeriesDatabaseModel1.Episodio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Episodios">
+              <PropertyRef Name="idSerie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vistos_ToEpisodios">
+          <End Role="Episodios" Type="SeriesDatabaseModel1.Episodio" Multiplicity="1" />
+          <End Role="Vistos" Type="SeriesDatabaseModel1.Visto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Episodios">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Vistos">
+              <PropertyRef Name="idEpisodio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioSerie_ToSeries">
+          <End Role="Series" Type="SeriesDatabaseModel1.SerieTV" Multiplicity="1" />
+          <End Role="UsuarioSerie" Type="Self.UsuarioSerie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Series">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UsuarioSerie">
+              <PropertyRef Name="idSerie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuarioSerie_ToUsuarios">
+          <End Role="Usuarios" Type="SeriesDatabaseModel1.Usuario" Multiplicity="1" />
+          <End Role="UsuarioSerie" Type="Self.UsuarioSerie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="UsuarioSerie">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vistos_ToUsuario">
+          <End Role="Usuarios" Type="SeriesDatabaseModel1.Usuario" Multiplicity="1" />
+          <End Role="Vistos" Type="SeriesDatabaseModel1.Visto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Vistos">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SeriesDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Episodios" EntityType="SeriesDatabaseModel1.Episodio" />
+          <EntitySet Name="Series" EntityType="SeriesDatabaseModel1.SerieTV" />
+          <EntitySet Name="Usuarios" EntityType="SeriesDatabaseModel1.Usuario" />
+          <EntitySet Name="UsuarioSerie" EntityType="Self.UsuarioSerie" />
+          <EntitySet Name="Vistos" EntityType="SeriesDatabaseModel1.Visto" />
+          <AssociationSet Name="FK_Episodios_Series" Association="Self.FK_Episodios_Series">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="Episodios" EntitySet="Episodios" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vistos_ToEpisodios" Association="Self.FK_Vistos_ToEpisodios">
+            <End Role="Episodios" EntitySet="Episodios" />
+            <End Role="Vistos" EntitySet="Vistos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioSerie_ToSeries" Association="Self.FK_UsuarioSerie_ToSeries">
+            <End Role="Series" EntitySet="Series" />
+            <End Role="UsuarioSerie" EntitySet="UsuarioSerie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuarioSerie_ToUsuarios" Association="Self.FK_UsuarioSerie_ToUsuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="UsuarioSerie" EntitySet="UsuarioSerie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vistos_ToUsuario" Association="Self.FK_Vistos_ToUsuario">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="Vistos" EntitySet="Vistos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SeriesDatabaseModel1StoreContainer" CdmEntityContainer="SeriesDatabaseEntities">
+          <EntitySetMapping Name="Episodios">
+            <EntityTypeMapping TypeName="SeriesDatabaseModel1.Episodio">
+              <MappingFragment StoreEntitySet="Episodios">
+                <ScalarProperty Name="id" ColumnName="Id" />
+                <ScalarProperty Name="idSerie" ColumnName="idSerie" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="exibicao" ColumnName="exibicao" />
+                <ScalarProperty Name="resumo" ColumnName="resumo" />
+                <ScalarProperty Name="temporada" ColumnName="temporada" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Series">
+            <EntityTypeMapping TypeName="SeriesDatabaseModel1.SerieTV">
+              <MappingFragment StoreEntitySet="Series">
+                <ScalarProperty Name="id" ColumnName="Id" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="emissora" ColumnName="emissora" />
+                <ScalarProperty Name="dia" ColumnName="dia" />
+                <ScalarProperty Name="horario" ColumnName="horario" />
+                <ScalarProperty Name="sinopse" ColumnName="sinopse" />
+                <ScalarProperty Name="ano" ColumnName="ano" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="SeriesDatabaseModel1.Usuario">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="id" ColumnName="Id" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="senha" ColumnName="senha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsuarioSerie">
+            <EntityTypeMapping TypeName="SeriesDatabaseModel1.UsuarioSerie">
+              <MappingFragment StoreEntitySet="UsuarioSerie">
+                <ScalarProperty Name="id" ColumnName="Id" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idSerie" ColumnName="idSerie" />
+                <ScalarProperty Name="preferencia" ColumnName="preferencia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vistos">
+            <EntityTypeMapping TypeName="SeriesDatabaseModel1.Visto">
+              <MappingFragment StoreEntitySet="Vistos">
+                <ScalarProperty Name="id" ColumnName="Id" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idEpisodio" ColumnName="idEpisodio" />
+                <ScalarProperty Name="avaliacao" ColumnName="avaliacao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
